@@ -1,6 +1,6 @@
 import React from 'react'
 import Trailer from './Trailer'
-import { Col } from 'react-bootstrap'
+import { Col ,Row } from 'react-bootstrap'
 
 export default function TrailerList({data}) {
     let trailers = data.map(function(trailer) {
@@ -12,7 +12,7 @@ export default function TrailerList({data}) {
     });
 
     const style = {
-      marginTop: '15px'
+      marginTop: '15px',
     };
 
     const titleStyle = {
@@ -21,10 +21,14 @@ export default function TrailerList({data}) {
 
     if (trailers.length !== 0){
       return(
-        <div>
-          <h3 style={titleStyle}>Trailers</h3>
-          <div style={style}>{trailers}</div>
-        </div>
+        
+          <Row>
+            <Col xs={12} sm={6} md={12}>
+            <h3 style={titleStyle}>Trailers</h3>
+            <Row style={style}>{trailers}</Row>
+           </Col>
+
+          </Row>
       );
     } else
       return null;

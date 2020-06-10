@@ -1,4 +1,5 @@
-import {URL_LIST,URL_SEARCH, URL_DETAIL, URL_PERSON, URL_CAST, URL_VIDEO, API_KEY, API_KEY_ALT} from '../const';
+import {URL_LIST,URL_SEARCH,URL_SIMILAR, URL_DETAIL, URL_PERSON, URL_CAST, URL_VIDEO, API_KEY, API_KEY_ALT} from '../const';
+import {useDispatch} from 'react-redux'
 // action types
 export const SEARCH_MOVIE = 'SEARCH_MOVIE';
 export const SEARCH_MOVIE_SUCCESS = 'SEARCH_MOVIE_SUCCESS';
@@ -18,6 +19,10 @@ export const FETCH_CASTS_FAILURE = 'FETCH_CASTS_FAILURE';
 export const FETCH_TRAILERS = 'FETCH_TRAILERS';
 export const FETCH_TRAILERS_SUCCESS = 'FETCH_TRAILERS_SUCCESS';
 export const FETCH_TRAILERS_FAILURE = 'FETCH_TRAILERS_FAILURE';
+export const SIMILAR_MOVIES_SUCCESS = 'SIMILAR_MOVIES_SUCCESS';
+export const SIMILAR_MOVIES_FAIL = 'SIMILAR_MOVIES_FAIL';
+export const SIMILAR_MOVIE = 'SIMILAR_MOVIE';
+
 
 function searchMovie(searchText) {
   return {
@@ -210,3 +215,44 @@ export function fetchTrailerList(id){
       }).catch(error => dispatch(fetchTrailersFail(error)))
   }
 }
+
+
+function fetchSimilar() {
+  return {
+    type: SIMILAR_MOVIE
+  };
+}
+
+
+export function similarMoviesSuccess(data){
+  console.log(data);
+  return{
+    type: SIMILAR_MOVIES_SUCCESS,
+    data
+  }
+}
+
+function similarMoviesFail(error) {
+return {
+  type: SIMILAR_MOVIES_FAIL,
+  error
+};
+}
+
+export function fetchSimilarMovies(id){
+  console.log(id);
+  if(id){
+  const url = URL_DETAIL + id + URL_SIMILAR + API_KEY;
+  console.log(url);
+  return function(dispatch){
+    dispatch(fetchSimilar())
+    return fetch(url)
+       .then(response => response.json())
+       .then(json => json.results)
+       .then(data =>   dispatch(similarMoviesSuccess(data)))
+       .catch(error => dispatch(similarMoviesFail(error)))
+  }
+  }
+  
+}
+

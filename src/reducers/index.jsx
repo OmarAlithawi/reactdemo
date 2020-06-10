@@ -6,7 +6,7 @@ import {FETCH_MOVIES, FETCH_MOVIES_SUCCESS, FETCH_MOVIES_FAILURE,
   FETCH_STAR_SUCCESS, FETCH_STAR_FAILURE,
   FETCH_CASTS, FETCH_CASTS_SUCCESS, FETCH_CASTS_FAILURE,
   FETCH_TRAILERS, FETCH_TRAILERS_SUCCESS, FETCH_TRAILERS_FAILURE,
-  SEARCH_MOVIE, SEARCH_MOVIE_SUCCESS, SEARCH_MOVIE_FAILURE} from '../actions'
+  SEARCH_MOVIE, SEARCH_MOVIE_SUCCESS, SEARCH_MOVIE_FAILURE ,SIMILAR_MOVIES_SUCCESS , SIMILAR_MOVIES_FAIL, SIMILAR_MOVIE} from '../actions'
 
 const defaultStateList = {
   isFetching: false,
@@ -127,6 +127,32 @@ const input = (state = '', action) => {
   }
 };
 
+
+
+const similarMoviesReducer = (state = defaultStateList , action) => {
+
+  switch (action.type){
+    
+    case SIMILAR_MOVIE:
+      return Object.assign({}, state, {
+        isFetching:true
+      });
+    case SIMILAR_MOVIES_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching:false,
+        items:action.data
+      });
+    case SIMILAR_MOVIES_FAIL:
+      return Object.assign({}, state, {
+        isFetching:false,
+        error:action.data
+      });
+    default:
+      return state;
+  }
+
+}
+
 const movieApp = combineReducers({
   movieList,
   castList,
@@ -134,6 +160,7 @@ const movieApp = combineReducers({
   movieDetail,
   starDetail,
   input,
+  similarMoviesReducer,
   routing: routerReducer
 });
 
